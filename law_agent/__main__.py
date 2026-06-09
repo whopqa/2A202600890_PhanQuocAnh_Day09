@@ -26,7 +26,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 PORT = 10101
-AGENT_ENDPOINT = f"http://localhost:{PORT}"
+AGENT_ENDPOINT = f"http://127.0.0.1:{PORT}"
 
 
 async def _register_with_retry(max_attempts: int = 10, delay: float = 2.0) -> None:

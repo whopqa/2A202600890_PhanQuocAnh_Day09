@@ -125,11 +125,18 @@ cp .env.example .env
 ### Run the Full System (Stage 5)
 
 ```bash
-# Start all 5 services (registry + 4 agents)
+# macOS/Linux: start all 5 services (registry + 4 agents)
 ./start_all.sh
 
 # In another terminal, send a test question
 uv run python test_client.py
+```
+
+On Windows PowerShell, use:
+
+```powershell
+.\start_all.ps1
+.\.venv\Scripts\python.exe test_client.py
 ```
 
 ### Run Individual Stage Demos
@@ -197,7 +204,7 @@ Each agent module follows the same structure:
 |---|---|---|
 | `OPENROUTER_API_KEY` | Your OpenRouter API key | (required) |
 | `OPENROUTER_MODEL` | Model identifier | `anthropic/claude-sonnet-4-5` |
-| `REGISTRY_URL` | Registry service URL | `http://localhost:10000` |
+| `REGISTRY_URL` | Registry service URL | `http://127.0.0.1:10000` |
 
 The model is swappable to any OpenRouter-supported model (e.g., `openai/gpt-4o`, `google/gemini-2.0-flash`).
 

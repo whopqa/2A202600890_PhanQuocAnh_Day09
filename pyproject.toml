@@ -14,6 +14,11 @@ dependencies = [
     "pydantic>=2.11.0",
     "python-pptx>=1.0.2",
     "cairosvg>=2.9.0",
+    "numpy>=2.3.0",
+    "requests>=2.32.0",
+    "sentence-transformers>=3.0.0",
+    "rank-bm25>=0.2.2",
+    "scikit-learn>=1.7.0",
 ]
 
 [build-system]
@@ -29,4 +34,5 @@ packages = [
     "tax_agent",
     "compliance_agent",
     "stages",
+    "agent_day08",
 ]

@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-CUSTOMER_AGENT_URL = os.getenv("CUSTOMER_AGENT_URL", "http://localhost:10100")
+CUSTOMER_AGENT_URL = os.getenv("CUSTOMER_AGENT_URL", "http://127.0.0.1:10100")
 
 QUESTION = (
     "If a company breaks a contract and avoids taxes, "

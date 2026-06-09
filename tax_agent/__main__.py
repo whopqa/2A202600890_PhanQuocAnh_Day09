@@ -28,8 +28,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 PORT = 10102
-AGENT_ENDPOINT = f"http://localhost:{PORT}"
-REGISTRY_URL = os.getenv("REGISTRY_URL", "http://localhost:10000")
+AGENT_ENDPOINT = f"http://127.0.0.1:{PORT}"
+REGISTRY_URL = os.getenv("REGISTRY_URL", "http://127.0.0.1:10000")
 
 
 async def _register_with_retry(max_attempts: int = 10, delay: float = 2.0) -> None:

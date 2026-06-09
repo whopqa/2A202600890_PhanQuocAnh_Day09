@@ -8,7 +8,7 @@ import os
 
 import httpx
 
-REGISTRY_URL = os.getenv("REGISTRY_URL", "http://localhost:10000")
+REGISTRY_URL = os.getenv("REGISTRY_URL", "http://127.0.0.1:10000")
 
 
 async def discover(task: str) -> str:
