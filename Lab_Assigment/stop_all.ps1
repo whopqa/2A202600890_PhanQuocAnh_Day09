@@ -4,7 +4,7 @@ $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $pidFile = Join-Path $projectRoot ".run\service-pids.json"
 
 if (-not (Test-Path $pidFile)) {
-    Write-Host "No PID file found at agent_day08\.run\service-pids.json"
+    Write-Host "No PID file found at Lab_Assigment\.run\service-pids.json"
     exit 0
 }
 

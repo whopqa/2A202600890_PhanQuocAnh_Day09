@@ -1,4 +1,4 @@
-"""Customer agent executor for the Day 8 A2A runtime."""
+"""Orchestrator executor for the Day 8 A2A runtime."""
 
 from __future__ import annotations
 
@@ -10,15 +10,15 @@ from a2a.server.events import EventQueue
 from a2a.server.tasks import TaskUpdater
 from a2a.types import Part, TextPart
 
-from agent_day08.common.a2a_client import delegate
-from agent_day08.common.registry_client import discover
-from agent_day08.common.trace_store import append_trace
+from Lab_Assigment.common.trace_store import append_trace
+from Lab_Assigment.day08_orchestrator_agent.graph import create_graph
 
 logger = logging.getLogger(__name__)
+_graph = create_graph()
 
 
-class Day08CustomerAgentExecutor(AgentExecutor):
-    """Front-door agent that forwards substantive questions to the orchestrator."""
+class Day08OrchestratorExecutor(AgentExecutor):
+    """Coordinate legal/news RAG sub-agents and synthesize the final answer."""
 
     async def execute(self, context: RequestContext, event_queue: EventQueue) -> None:
         question = self._extract_question(context)
@@ -30,10 +30,10 @@ class Day08CustomerAgentExecutor(AgentExecutor):
         append_trace(
             trace_id=trace_id,
             stage="stage5",
-            step="customer_receive",
-            agent="day08_customer_agent",
+            step="orchestrator_receive",
+            agent="day08_orchestrator_agent",
             status="completed",
-            detail="Customer agent nhan cau hoi tu UI hoac client.",
+            detail="Orchestrator nhan cau hoi va khoi tao state graph.",
             metadata={"context_id": context_id, "depth": depth},
         )
 
@@ -42,50 +42,48 @@ class Day08CustomerAgentExecutor(AgentExecutor):
         await updater.start_work()
 
         try:
-            endpoint = await discover("legal_consultation")
-            append_trace(
-                trace_id=trace_id,
-                stage="stage5",
-                step="customer_discover_orchestrator",
-                agent="day08_customer_agent",
-                status="completed",
-                detail=f"Registry tra ve orchestrator endpoint {endpoint}",
+            result = await _graph.ainvoke(
+                {
+                    "question": question,
+                    "context_id": context_id,
+                    "trace_id": trace_id,
+                    "delegation_depth": depth,
+                    "memory_context": "",
+                    "needs_legal": False,
+                    "needs_news": False,
+                    "legal_result": "",
+                    "news_result": "",
+                    "final_answer": "",
+                },
+                config={"configurable": {"thread_id": context_id}},
             )
-            answer = await delegate(
-                endpoint=endpoint,
-                question=question,
-                context_id=context_id,
-                trace_id=trace_id,
-                depth=depth + 1,
-            )
-            append_trace(
-                trace_id=trace_id,
-                stage="stage5",
-                step="customer_delegate_orchestrator",
-                agent="day08_customer_agent",
-                status="completed",
-                detail="Customer agent da gui request sang orchestrator va nhan ket qua.",
-            )
-            if not answer:
-                answer = "Khong nhan duoc phan hoi tu legal orchestrator."
+            answer = result.get("final_answer", "") or "Khong the tong hop cau tra loi luc nay."
             await updater.add_artifact(
                 parts=[Part(root=TextPart(text=answer))],
-                name="day08_customer_answer",
+                name="day08_orchestrated_answer",
             )
             await updater.complete()
+            append_trace(
+                trace_id=trace_id,
+                stage="stage5",
+                step="orchestrator_complete",
+                agent="day08_orchestrator_agent",
+                status="completed",
+                detail="Orchestrator da tong hop xong cau tra loi cuoi cung.",
+            )
         except Exception as exc:
             append_trace(
                 trace_id=trace_id,
                 stage="stage5",
-                step="customer_error",
-                agent="day08_customer_agent",
+                step="orchestrator_error",
+                agent="day08_orchestrator_agent",
                 status="failed",
-                detail=f"Customer agent loi: {exc}",
+                detail=f"Orchestrator loi: {exc}",
             )
-            logger.exception("Day08 customer agent failed: %s", exc)
+            logger.exception("Day08 orchestrator failed: %s", exc)
             await updater.failed(
                 updater.new_agent_message(
-                    parts=[Part(root=TextPart(text=f"Customer agent failed: {exc}"))]
+                    parts=[Part(root=TextPart(text=f"Day08 orchestrator failed: {exc}"))]
                 )
             )
 

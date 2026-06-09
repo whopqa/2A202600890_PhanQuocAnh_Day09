@@ -1,4 +1,4 @@
-"""News RAG agent executor for the Day 8 A2A runtime."""
+"""Legal RAG agent executor for the Day 8 A2A runtime."""
 
 from __future__ import annotations
 
@@ -10,13 +10,13 @@ from a2a.server.events import EventQueue
 from a2a.server.tasks import TaskUpdater
 from a2a.types import Part, TextPart
 
-from agent_day08.day08_news_rag_agent.service import answer_question
-from agent_day08.common.trace_store import append_trace
+from Lab_Assigment.day08_legal_rag_agent.service import answer_question
+from Lab_Assigment.common.trace_store import append_trace
 
 logger = logging.getLogger(__name__)
 
 
-class Day08NewsRagExecutor(AgentExecutor):
+class Day08LegalRagExecutor(AgentExecutor):
     async def execute(self, context: RequestContext, event_queue: EventQueue) -> None:
         question = self._extract_question(context)
         context_id = context.context_id or str(uuid4())
@@ -26,10 +26,10 @@ class Day08NewsRagExecutor(AgentExecutor):
         append_trace(
             trace_id=trace_id,
             stage="stage5",
-            step="news_rag_receive",
-            agent="day08_news_rag_agent",
+            step="legal_rag_receive",
+            agent="day08_legal_rag_agent",
             status="completed",
-            detail="News RAG agent nhan request tu orchestrator.",
+            detail="Legal RAG agent nhan request tu orchestrator.",
         )
         updater = TaskUpdater(event_queue, task_id, context_id)
         await updater.submit()
@@ -39,22 +39,22 @@ class Day08NewsRagExecutor(AgentExecutor):
             answer = answer_question(question, trace_id=trace_id)
             await updater.add_artifact(
                 parts=[Part(root=TextPart(text=answer))],
-                name="day08_news_rag_answer",
+                name="day08_legal_rag_answer",
             )
             await updater.complete()
         except Exception as exc:
             append_trace(
                 trace_id=trace_id,
                 stage="stage4",
-                step="news_retrieval",
-                agent="day08_news_rag_agent",
+                step="legal_retrieval",
+                agent="day08_legal_rag_agent",
                 status="failed",
-                detail=f"News RAG loi: {exc}",
+                detail=f"Legal RAG loi: {exc}",
             )
-            logger.exception("Day08 news rag failed: %s", exc)
+            logger.exception("Day08 legal rag failed: %s", exc)
             await updater.failed(
                 updater.new_agent_message(
-                    parts=[Part(root=TextPart(text=f"Day08 news rag failed: {exc}"))]
+                    parts=[Part(root=TextPart(text=f"Day08 legal rag failed: {exc}"))]
                 )
             )
 

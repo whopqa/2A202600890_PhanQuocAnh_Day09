@@ -56,27 +56,27 @@ $services = @()
 
 try {
     Write-Host "Starting Day08 registry on port 11000..."
-    $services += Start-ServiceProcess -Name "day08_registry" -ModuleName "agent_day08.day08_registry"
+    $services += Start-ServiceProcess -Name "day08_registry" -ModuleName "Lab_Assigment.day08_registry"
     Wait-HttpReady -Name "Day08 Registry" -Url "http://127.0.0.1:11000/health"
 
     Write-Host "Starting Day08 legal RAG agent on port 11012..."
-    $services += Start-ServiceProcess -Name "day08_legal_rag" -ModuleName "agent_day08.day08_legal_rag_agent"
+    $services += Start-ServiceProcess -Name "day08_legal_rag" -ModuleName "Lab_Assigment.day08_legal_rag_agent"
     Wait-HttpReady -Name "Day08 Legal RAG Agent" -Url "http://127.0.0.1:11012/.well-known/agent.json"
 
     Write-Host "Starting Day08 news RAG agent on port 11013..."
-    $services += Start-ServiceProcess -Name "day08_news_rag" -ModuleName "agent_day08.day08_news_rag_agent"
+    $services += Start-ServiceProcess -Name "day08_news_rag" -ModuleName "Lab_Assigment.day08_news_rag_agent"
     Wait-HttpReady -Name "Day08 News RAG Agent" -Url "http://127.0.0.1:11013/.well-known/agent.json"
 
     Write-Host "Starting Day08 orchestrator agent on port 11011..."
-    $services += Start-ServiceProcess -Name "day08_orchestrator" -ModuleName "agent_day08.day08_orchestrator_agent"
+    $services += Start-ServiceProcess -Name "day08_orchestrator" -ModuleName "Lab_Assigment.day08_orchestrator_agent"
     Wait-HttpReady -Name "Day08 Orchestrator Agent" -Url "http://127.0.0.1:11011/.well-known/agent.json"
 
     Write-Host "Starting Day08 customer agent on port 11010..."
-    $services += Start-ServiceProcess -Name "day08_customer" -ModuleName "agent_day08.day08_customer_agent"
+    $services += Start-ServiceProcess -Name "day08_customer" -ModuleName "Lab_Assigment.day08_customer_agent"
     Wait-HttpReady -Name "Day08 Customer Agent" -Url "http://127.0.0.1:11010/.well-known/agent.json"
 
     Write-Host "Starting Day08 UI on port 11014..."
-    $services += Start-ServiceProcess -Name "day08_ui" -ModuleName "agent_day08.day08_ui"
+    $services += Start-ServiceProcess -Name "day08_ui" -ModuleName "Lab_Assigment.day08_ui"
     Wait-HttpReady -Name "Day08 UI" -Url "http://127.0.0.1:11014/health"
 
     $services | ConvertTo-Json | Set-Content -Path $pidFile
@@ -90,8 +90,8 @@ try {
     Write-Host "  News RAG:         http://127.0.0.1:11013"
     Write-Host "  Web UI:           http://127.0.0.1:11014"
     Write-Host ""
-    Write-Host "PID file is in agent_day08\.run\"
-    Write-Host "Stop services with: .\agent_day08\stop_all.ps1"
+    Write-Host "PID file is in Lab_Assigment\.run\"
+    Write-Host "Stop services with: .\Lab_Assigment\stop_all.ps1"
 } catch {
     Stop-StartedServices -Services $services
     throw

@@ -38,7 +38,7 @@ async def main() -> None:
         except Exception as exc:
             print(f"ERROR: Could not reach Day08 Customer Agent at {card_url}")
             print(f"  {exc}")
-            print("Make sure Day08 services are running (agent_day08/start_all.ps1 or .sh)")
+            print("Make sure Day08 services are running (Lab_Assigment/start_all.ps1 or .sh)")
             sys.exit(1)
 
         from a2a.client import A2AClient

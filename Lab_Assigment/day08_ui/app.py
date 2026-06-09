@@ -14,9 +14,9 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from agent_day08.common.a2a_client import delegate
-from agent_day08.common.llm import llm_enabled
-from agent_day08.common.trace_store import append_trace, clear_trace, split_trace_by_stage
+from Lab_Assigment.common.a2a_client import delegate
+from Lab_Assigment.common.llm import llm_enabled
+from Lab_Assigment.common.trace_store import append_trace, clear_trace, split_trace_by_stage
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 UI_BUILD_VERSION = "day08-ui-trace-v2"

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from langchain_core.tools import tool
 
-from agent_day08.rag.retrieval import build_source_list, format_hits, retrieve_domain
+from Lab_Assigment.rag.retrieval import build_source_list, format_hits, retrieve_domain
 
 
 def retrieve_legal_hits(query: str, top_k: int = 4) -> list[dict]:

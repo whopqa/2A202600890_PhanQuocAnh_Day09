@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import json
 
-from agent_day08.rag.synthesis import build_specialist_response
-from agent_day08.common.trace_store import append_trace
+from Lab_Assigment.rag.synthesis import build_specialist_response
+from Lab_Assigment.common.trace_store import append_trace
 
 
 def answer_question(question: str, trace_id: str | None = None) -> str:

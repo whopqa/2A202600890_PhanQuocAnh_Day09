@@ -11,11 +11,11 @@ from unittest.mock import AsyncMock, patch
 import httpx
 from fastapi.testclient import TestClient
 
-from agent_day08.day08_ui.app import app as ui_app
-from agent_day08.common.trace_store import append_trace, clear_trace
-from agent_day08.day08_orchestrator_agent.graph import route_domains
-from agent_day08.rag.retrieval import retrieve_domain
-from agent_day08.rag.synthesis import build_aggregate_answer
+from Lab_Assigment.day08_ui.app import app as ui_app
+from Lab_Assigment.common.trace_store import append_trace, clear_trace
+from Lab_Assigment.day08_orchestrator_agent.graph import route_domains
+from Lab_Assigment.rag.retrieval import retrieve_domain
+from Lab_Assigment.rag.synthesis import build_aggregate_answer
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -81,7 +81,7 @@ class UiTests(unittest.TestCase):
 
     def test_chat_endpoint_returns_agent_payload(self) -> None:
         with patch(
-            "agent_day08.day08_ui.app.ask_customer_agent",
+            "Lab_Assigment.day08_ui.app.ask_customer_agent",
             new=AsyncMock(
                 return_value={
                     "session_id": "demo-session",
@@ -117,7 +117,7 @@ class UiTests(unittest.TestCase):
             }
         ]
         with patch(
-            "agent_day08.day08_ui.app.collect_service_statuses",
+            "Lab_Assigment.day08_ui.app.collect_service_statuses",
             new=AsyncMock(return_value=fake_statuses),
         ):
             response = self.client.get("/api/status")
@@ -165,12 +165,12 @@ class IntegrationSmokeTests(unittest.TestCase):
         env["PYTHONIOENCODING"] = "utf-8"
         cls.env = env
         cls.processes = [
-            subprocess.Popen([sys.executable, "-m", "agent_day08.day08_registry"], cwd=REPO_ROOT, env=env),
-            subprocess.Popen([sys.executable, "-m", "agent_day08.day08_legal_rag_agent"], cwd=REPO_ROOT, env=env),
-            subprocess.Popen([sys.executable, "-m", "agent_day08.day08_news_rag_agent"], cwd=REPO_ROOT, env=env),
-            subprocess.Popen([sys.executable, "-m", "agent_day08.day08_orchestrator_agent"], cwd=REPO_ROOT, env=env),
-            subprocess.Popen([sys.executable, "-m", "agent_day08.day08_customer_agent"], cwd=REPO_ROOT, env=env),
-            subprocess.Popen([sys.executable, "-m", "agent_day08.day08_ui"], cwd=REPO_ROOT, env=env),
+            subprocess.Popen([sys.executable, "-m", "Lab_Assigment.day08_registry"], cwd=REPO_ROOT, env=env),
+            subprocess.Popen([sys.executable, "-m", "Lab_Assigment.day08_legal_rag_agent"], cwd=REPO_ROOT, env=env),
+            subprocess.Popen([sys.executable, "-m", "Lab_Assigment.day08_news_rag_agent"], cwd=REPO_ROOT, env=env),
+            subprocess.Popen([sys.executable, "-m", "Lab_Assigment.day08_orchestrator_agent"], cwd=REPO_ROOT, env=env),
+            subprocess.Popen([sys.executable, "-m", "Lab_Assigment.day08_customer_agent"], cwd=REPO_ROOT, env=env),
+            subprocess.Popen([sys.executable, "-m", "Lab_Assigment.day08_ui"], cwd=REPO_ROOT, env=env),
         ]
         cls._wait_for_url("http://127.0.0.1:12100/health", timeout=40)
         cls._wait_for_url("http://127.0.0.1:12112/.well-known/agent.json", timeout=40)
@@ -204,7 +204,7 @@ class IntegrationSmokeTests(unittest.TestCase):
 
     def test_end_to_end_client(self) -> None:
         result = subprocess.run(
-            [sys.executable, "-m", "agent_day08.test_client"],
+            [sys.executable, "-m", "Lab_Assigment.test_client"],
             cwd=REPO_ROOT,
             env=self.env,
             capture_output=True,

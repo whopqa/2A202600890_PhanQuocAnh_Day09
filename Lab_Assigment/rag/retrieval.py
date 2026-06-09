@@ -9,7 +9,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from agent_day08.src.local_retrieval import corpus_idf, cosine_from_counters, expanded_tokens, get_chunks
+from Lab_Assigment.src.local_retrieval import corpus_idf, cosine_from_counters, expanded_tokens, get_chunks
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 VECTOR_STORE_PATH = DATA_DIR / "vector_store.json"
@@ -165,7 +165,7 @@ def deterministic_search_domain(query: str, domain: str, top_k: int = DEFAULT_TO
 
 def merge_ranked_lists(ranked_lists: list[list[dict[str, Any]]], top_k: int) -> list[dict[str, Any]]:
     try:
-        from agent_day08.src.task7_reranking import rerank_rrf
+        from Lab_Assigment.src.task7_reranking import rerank_rrf
     except Exception:
         rerank_rrf = None
 
@@ -191,7 +191,7 @@ def merge_ranked_lists(ranked_lists: list[list[dict[str, Any]]], top_k: int) -> 
 
 def rerank_candidates(query: str, candidates: list[dict[str, Any]], top_k: int) -> list[dict[str, Any]]:
     try:
-        from agent_day08.src.task7_reranking import rerank
+        from Lab_Assigment.src.task7_reranking import rerank
     except Exception:
         rerank = None
 
@@ -223,7 +223,7 @@ def retrieve_domain(query: str, domain: str, top_k: int = DEFAULT_TOP_K) -> list
         return fallback
 
     try:
-        from agent_day08.src.task8_pageindex_vectorless import pageindex_search
+        from Lab_Assigment.src.task8_pageindex_vectorless import pageindex_search
     except Exception:
         return []
 

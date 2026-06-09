@@ -16,8 +16,8 @@ from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.tasks import InMemoryTaskStore
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from agent_day08.common.registry_client import register
-from agent_day08.day08_news_rag_agent.agent_executor import Day08NewsRagExecutor
+from Lab_Assigment.common.registry_client import register
+from Lab_Assigment.day08_news_rag_agent.agent_executor import Day08NewsRagExecutor
 
 logging.basicConfig(
     level=logging.INFO,

@@ -8,8 +8,8 @@ from typing import Any
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from agent_day08.common.llm import get_llm, llm_enabled
-from agent_day08.rag.retrieval import build_source_list, format_hits, retrieve_domain, source_label
+from Lab_Assigment.common.llm import get_llm, llm_enabled
+from Lab_Assigment.rag.retrieval import build_source_list, format_hits, retrieve_domain, source_label
 
 
 def _trim_excerpt(text: str, limit: int = 240) -> str:

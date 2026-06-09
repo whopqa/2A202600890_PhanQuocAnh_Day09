@@ -1,4 +1,4 @@
-"""Customer agent server for the Day 8 A2A runtime."""
+"""Legal RAG specialist server for the Day 8 A2A runtime."""
 
 from __future__ import annotations
 
@@ -16,27 +16,27 @@ from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.tasks import InMemoryTaskStore
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
 
-from agent_day08.common.registry_client import register
-from agent_day08.day08_customer_agent.agent_executor import Day08CustomerAgentExecutor
+from Lab_Assigment.common.registry_client import register
+from Lab_Assigment.day08_legal_rag_agent.agent_executor import Day08LegalRagExecutor
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [day08_customer_agent] %(levelname)s %(message)s",
+    format="%(asctime)s [day08_legal_rag] %(levelname)s %(message)s",
 )
 logger = logging.getLogger(__name__)
 
-PORT = int(os.getenv("DAY08_CUSTOMER_AGENT_PORT", "11010"))
+PORT = int(os.getenv("DAY08_LEGAL_RAG_AGENT_PORT", "11012"))
 AGENT_ENDPOINT = f"http://127.0.0.1:{PORT}"
 
 
 async def _register_with_retry(max_attempts: int = 10, delay: float = 2.0) -> None:
     payload = {
-        "agent_name": "day08-customer-agent",
+        "agent_name": "day08-legal-rag-agent",
         "version": "1.0",
-        "description": "Entry point for the Day 8 legal RAG assistant",
-        "tasks": [],
+        "description": "Drug-law document retrieval specialist for the Day 8 legal chatbot.",
+        "tasks": ["legal_kb_query"],
         "endpoint": AGENT_ENDPOINT,
-        "tags": ["customer", "entry-point", "day08"],
+        "tags": ["legal", "rag", "day08"],
     }
     for attempt in range(1, max_attempts + 1):
         try:
@@ -52,8 +52,8 @@ async def main() -> None:
     await _register_with_retry()
 
     agent_card = AgentCard(
-        name="Day08 Customer Agent",
-        description="Front-door legal advisor for the Day 8 A2A RAG system.",
+        name="Day08 Legal RAG Agent",
+        description="Retrieve and summarize legal document evidence from the Day 8 corpus.",
         url=AGENT_ENDPOINT,
         version="1.0.0",
         capabilities=AgentCapabilities(streaming=False),
@@ -61,20 +61,20 @@ async def main() -> None:
         default_output_modes=["text/plain"],
         skills=[
             AgentSkill(
-                id="day08_entrypoint",
-                name="Day08 Entry Point",
-                description="Accept legal questions and forward them to the Day08 legal orchestrator.",
-                tags=["day08", "entry-point", "legal"],
+                id="legal_kb_query",
+                name="Legal KB Query",
+                description="Search the Day08 legal document corpus and return grounded evidence.",
+                tags=["legal", "rag", "kb"],
             )
         ],
     )
 
-    executor = Day08CustomerAgentExecutor()
+    executor = Day08LegalRagExecutor()
     request_handler = DefaultRequestHandler(agent_executor=executor, task_store=InMemoryTaskStore())
     app = A2AFastAPIApplication(agent_card=agent_card, http_handler=request_handler).build()
 
     config = uvicorn.Config(app, host="0.0.0.0", port=PORT, log_level="info")
-    logger.info("Day08 Customer Agent listening on port %d", PORT)
+    logger.info("Day08 Legal RAG Agent listening on port %d", PORT)
     await uvicorn.Server(config).serve()
 
 

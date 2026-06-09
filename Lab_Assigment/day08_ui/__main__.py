@@ -8,7 +8,7 @@ import os
 import uvicorn
 from dotenv import load_dotenv
 
-from agent_day08.day08_ui.app import app
+from Lab_Assigment.day08_ui.app import app
 
 load_dotenv()
 

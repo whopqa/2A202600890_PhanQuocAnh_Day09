@@ -9,10 +9,10 @@ from typing import Annotated, TypedDict
 from langgraph.constants import Send
 from langgraph.graph import END, StateGraph
 
-from agent_day08.common.a2a_client import delegate
-from agent_day08.common.registry_client import discover
-from agent_day08.common.trace_store import append_trace
-from agent_day08.rag.synthesis import build_aggregate_answer, format_memory_context, parse_specialist_payload
+from Lab_Assigment.common.a2a_client import delegate
+from Lab_Assigment.common.registry_client import discover
+from Lab_Assigment.common.trace_store import append_trace
+from Lab_Assigment.rag.synthesis import build_aggregate_answer, format_memory_context, parse_specialist_payload
 
 MAX_DELEGATION_DEPTH = 3
 MEMORY: dict[str, deque[dict[str, str]]] = defaultdict(lambda: deque(maxlen=4))
